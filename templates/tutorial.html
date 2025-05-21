@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="onboarding-container">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="onboarding-step active" data-step="1">
+        <h3>Welcome to Insight Finance! 🎉</h3>
+        <p>We will guide you through the main features</p>
+        <button class="btn btn-primary next-step">Get Started</button>
+    </div>
+
+    <div class="onboarding-step" data-step="2">
+        <h4><i class="bi bi-plus-circle"></i> Add Transactions</h4>
+        <img src="{{ url_for('static', filename='images/tutorial/1-add.gif') }}" alt="Adicionar transação"
+            class="tutorial-gif">
+        <p>Click "Add Transaction" to record new entries or exits</p>
+        <div class="step-controls">
+            <button class="btn btn-outline-secondary prev-step">Back</button>
+            <button class="btn btn-primary next-step">Next</button>
+        </div>
+    </div>
+
+    <div class="onboarding-step" data-step="3">
+        <h4><i class="bi bi-graph-up"></i> Summary Analysis</h4>
+        <div class="tutorial-visual">
+            <div class="graph-placeholder"></div>
+            <p>Monitor your monthly financial performance</p>
+        </div>
+        <div class="step-controls">
+            <button class="btn btn-outline-secondary prev-step">Back</button>
+            <button class="btn btn-primary next-step">Next</button>
+        </div>
+    </div>
+
+    <div class="onboarding-step" data-step="4">
+        <h4 class="mb-4"><i class="bi bi-bell"></i> Smart Alerts</h4>
+        <div class="alert alert-warning tutorial-alert mb-4">
+            Get alerts when your spending exceeds targets
+        </div>
+        <img src="{{ url_for('static', filename='images/tutorial/alert-model.png') }}" alt="Alerta"
+            class="tutorial-gif">
+
+        <p>Set your target in your profile</p>
+
+        <div class="step-controls">
+            <button class="btn btn-secondary prev-step">Back</button>
+            <button class="btn btn-outline-success finish-tutorial">Finish Tutorial</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

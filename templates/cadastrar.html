@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="p-2">
+    <h2 class="mb-4">Register for free</h2>
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="mb-4">
+            <label>Full Name</label>
+            <input type="text" name="fullname" class="form-control" maxlength="100" required>
+        </div>
+
+        <div class="mb-4">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" maxlength="100" value="{{ email|default('', true) }}"
+                required>
+        </div>
+
+        <div class="mb-4">
+            <label>Password</label>
+            <input type="password" name="password" maxlength="100" class="form-control mb-3" required>
+            <small class="form-text text-muted">
+                Requirements:
+                <ul>
+                    <li>Minimum 6 characters</li>
+                    <li>At least one capital letter</li>
+                    <li>At least one special character</li>
+                    <li>At least one number</li>
+                </ul>
+            </small>
+        </div>
+
+        <div class="mb-4 form-check">
+            <input type="checkbox" class="form-check-input" id="aceitarTermos" name="aceitar_termos" required>
+            <label class="form-check-label" for="aceitarTermos">
+                I have read and accept the <a class="link-blue" href="{{ url_for('main.termos_condicoes') }}"
+                    target="_blank">Terms and Conditions</a> and
+                <a class="link-blue" href="{{ url_for('main.politica_privacidade') }}" target="_blank">Privacy
+                    Policy</a>
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Register</button>
+
+        <div class="subscribe">
+            <label>Already have an account?</label>
+            <a class=" link-blue" href="{{ url_for('main.login') }}" class="btn btn-link">
+                <i class="bi bi-box-arrow-right me-2"></i>Log in</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

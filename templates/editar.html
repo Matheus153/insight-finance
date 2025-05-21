@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="p-2">
+    <h2 class="mb-4">Edit Transaction</h2>
+
+    {% if transacao.meses_repeticao > 0 %}
+    <div class="alert alert-warning">
+        This recurring transaction has already been processed. Only the recurrence status can be changed.
+    </div>
+    {% endif %}
+
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="mb-3">
+            <label for="descricao" class="form-label">Description</label>
+            <input type="text" class="form-control" id="descricao" name="descricao" maxlength="100"
+                value="{{ transacao.descricao }}" required {% if transacao.meses_repeticao> 0 %}disabled{% endif %}>
+        </div>
+
+        <div class="mb-3">
+            <label for="valor" class="form-label">Amount ($)</label>
+            <input type="number" step="0.01" class="form-control" id="valor" name="valor" value="{{ transacao.valor }}"
+                required {% if transacao.meses_repeticao> 0 %}disabled{% endif %}>
+        </div>
+
+        <div class="mb-3">
+            <label for="tipo" class="form-label">Type</label>
+            <select class="form-select" id="tipo" name="tipo" required {% if transacao.meses_repeticao> 0 %}disabled{%
+                endif
+                %}>
+                <option value="receita" {% if transacao.tipo=='receita' %}selected{% endif %}>Revenue</option>
+                <option value="despesa" {% if transacao.tipo=='despesa' %}selected{% endif %}>Expense</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="categoria" class="form-label">Category</label>
+            <select class="form-select" id="categoria" name="categoria" required {% if transacao.meses_repeticao> 0
+                %}disabled{% endif %}>
+                {% for categoria in categorias %}
+                <option value="{{ categoria.id }}" {% if categoria.id==transacao.categoria_id %}selected{% endif %}>
+                    {{ categoria.nome }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="data" class="form-label">Date</label>
+            <input type="datetime-local" class="form-control" id="data" name="data"
+                value="{{ transacao.data.strftime('%Y-%m-%dT%H:%M') }}" required {% if transacao.meses_repeticao> 0
+            %}disabled{% endif %}>
+        </div>
+
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="recorrente" name="recorrente" {% if transacao.recorrente
+                %}checked{% endif %}>
+
+            <label class="form-check-label" for="recorrente">
+                Repeat monthly for 1 year
+                {% if transacao.meses_repeticao > 0 %}
+                <small class="text-muted">({{ 12 - transacao.meses_repeticao }} remaining months)</small>
+                {% endif %}
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2 mb-4">Update</button>
+        <a href="{{ url_for('main.listar_transacoes') }}" class="btn btn-secondary mt-2 mb-4">Cancel</a>
+    </form>
+</div>
+
+{% endblock %}

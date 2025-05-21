@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-section bg-primary-gradient">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Coluna de Apresentação -->
+            <div class="col-lg-6 mb-5 mb-lg-0 text-white">
+                <h1 class="display-4 mb-4">Welcome to Insight Finance</h1>
+
+                <!-- Seção Para quem é -->
+                <div class="mb-5">
+                    <div class="d-flex align-items-center mb-4">
+                        <i class="fas fa-users me-3 fs-2"></i>
+                        <h3>What I use it for:</h3>
+                    </div>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">✅ Personal financial control</li>
+                        <li class="mb-3">✅ Management for small businesses</li>
+                        <li class="mb-3">✅ Tool for finance teams</li>
+                    </ul>
+                </div>
+
+                <!-- Seção Funcionalidades -->
+                <div class="mb-0">
+                    <div class="d-flex align-items-center mb-4">
+                        <h3>Key Features</h3>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="card bg-dark">
+                                <div class="card-body">
+                                    <h5><i class="fas fa-chart-pie me-2"></i>Dashboard</h5>
+                                    <p class="text-muted mb-0">Complete view of finances with interactive graphics</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-dark">
+                                <div class="card-body">
+                                    <h5><i class="fas fa-bell me-2"></i>Alerts</h5>
+                                    <p class="text-muted mb-0">Smart notifications when you reach your targets</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção Como Acessar -->
+                <div class="mb-3">
+                    <div class="d-flex align-items-center mb-3">
+                        <h3>How do I access it?</h3>
+                    </div>
+
+                    <div class="card bg-dark">
+                        <div class="card-body">
+                            <ol class="text-muted mb-0">
+                                <li>Register your e-mail or log in socially</li>
+                                <li>Access your finance panel</li>
+                                <li>Add transactions</li>
+                                <li>Manage your finances</li>
+                                <li>Set goals and control your spending</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna de Login -->
+            <div class="col-lg-6">
+                <div class="auth-card bg-white p-4 rounded-3 shadow">
+                    <h2 class="text-center mb-4 mt-2">Access your account</h2>
+
+                    <form method="POST" action="{{ url_for('main.login') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" maxlength="100" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control" maxlength="100" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 mb-3">Sign in</button>
+
+                        <div class="text-center">
+                            <a class="link-blue" href="{{ url_for('main.recuperar_senha') }}">
+                                I forgot my password
+                            </a>
+                        </div>
+                    </form>
+
+                    <!-- Divisor social -->
+                    <div class="position-relative my-4">
+                        <hr>
+                        <div class="position-absolute top-50 start-50 translate-middle bg-white px-3">or</div>
+                    </div>
+
+                    <div class="social-login text-center">
+                        <button onclick="loginWithGoogle()" class="btn btn-danger mb-2 w-100">
+                            <i class="fab fa-google"></i> Login with Google
+                        </button>
+
+                        <button onclick="loginWithGithub()" class="btn btn-dark mb-2 w-100">
+                            <i class="fab fa-github"></i> Login with GitHub
+                        </button>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <div class="subscribe text-center mt-4">
+                            <p class="mb-0">No account?</p>
+                            <a class="link-blue mt-1" href="{{ url_for('main.cadastrar') }}">
+                                Register for free
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+<script>
+    // Configuração do Firebase a partir das variáveis de ambiente
+    const firebaseConfig = {
+        apiKey: "{{ os.getenv('API_KEY') }}",
+        authDomain: "{{ os.getenv('PROJECT_ID') }}.firebaseapp.com",
+        projectId: "{{ os.getenv('PROJECT_ID') }}",
+        storageBucket: "{{ os.getenv('PROJECT_ID') }}.firebasestorage.app",
+        messagingSenderId: "{{ os.getenv('MESSAGING_SENDER_ID') }}",
+        appId: "{{ os.getenv('APP_ID') }}"
+    };
+
+    // Inicialização do Firebase
+    const firebaseApp = firebase.initializeApp(firebaseConfig);
+
+    // Funções de login social
+    const handleSocialLogin = async (provider) => {
+        try {
+            const result = await firebase.auth().signInWithPopup(provider);
+            const token = await result.user.getIdToken();
+
+            const response = await fetch("{{ url_for('main.login_social') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({ token })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                window.location.href = data.redirect;
+            } else {
+                const error = await response.json();
+                showToast(error.message || 'Erro no login');
+            }
+        } catch (error) {
+            showToast(error.message || 'Erro na autenticação');
+        }
+    };
+
+    const loginWithGoogle = () => {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        provider.addScope('profile');
+        provider.addScope('email');
+        handleSocialLogin(provider);
+    };
+
+    const loginWithGithub = () => {
+        const provider = new firebase.auth.GithubAuthProvider();
+        provider.addScope('read:user');
+        handleSocialLogin(provider);
+    };
+
+    // Sistema de notificação
+    function showToast(message, type = 'danger') {
+        const toast = document.createElement('div');
+        toast.className = `toast align-items-center text-white bg-${type} border-0`;
+        toast.setAttribute('role', 'alert');
+        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">${message}</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        `;
+
+        const container = document.querySelector('.container');
+        container.prepend(toast);
+
+        new bootstrap.Toast(toast, { autohide: true, delay: 5000 }).show();
+    }
+</script>
+{% endblock %}

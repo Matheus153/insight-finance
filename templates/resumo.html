@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="p-2">
+        <h2>Financial Summary</h2>
+    </div>
+
+    <div class="filter-box mb-4">
+        <form method="get" class="row g-3 align-items-center">
+
+            {% if current_user.is_admin %}
+            <div class="col-md-5">
+                <select name="user_id" class="form-select">
+                    <option value="">All users</option>
+                    {% for usuario in usuarios %}
+                    <option value="{{ usuario.uid }}" {% if user_id_filtro==usuario.uid %}selected{% endif %}>
+                        {{ usuario.email }} ({{ usuario.uid|truncate(8, True, '...') }})
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+
+            <div class="col-md-3">
+                <select class="form-select" name="mes">
+                    {% for month_num, month_name in months %}
+                    <option value="{{ month_num }}" {% if month_num==selected_month %}selected{% endif %}>
+                        {{ month_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <select class="form-select" name="ano">
+                    {% for value, year in years %}
+                    <option value="{{ value }}" {% if value==selected_year %}selected{% endif %}>
+                        {{ year if value != 0 else 'All years' }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <a href="{{ url_for('main.resumo') }}" class="btn btn-outline-secondary">Clear</a>
+            </div>
+        </form>
+    </div>
+
+
+    <!-- Graph Section -->
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    {% if graficos.despesas %}
+                    <div class="grafico-responsive">
+                        {{ graficos.despesas|safe }}
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info mb-0">
+                        <i class="bi bi-pie-chart"></i>
+                        It was not possible to generate the expenditure graph due to a lack of data.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    {% if graficos.comparativo %}
+                    <div class="grafico-responsive">
+                        {{ graficos.comparativo|safe }}
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info mb-0">
+                        <i class="bi bi-bar-chart"></i>
+                        It was not possible to generate a comparative graph due to a lack of data.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Seção de Resumo por Categoria -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Distribution by Category</h5>
+                </div>
+                <div class="card-body">
+                    {% if resumo_categorias %}
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th class="text-end">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for categoria, total in resumo_categorias %}
+                            <tr>
+                                <td>{{ categoria }}</td>
+                                <td class="text-end">
+                                    $ {{ "%.2f"|format(total) }}
+                                    <!-- {{ 'text-success' if total >= 0 else 'text-danger' }} adicionar dentro de class para formatar-->
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="alert alert-info mb-0">
+                        No transactions found during this period.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção de Transações Recentes -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Recent transactions</h5>
+                </div>
+                <div class="card-body">
+                    {% if transacoes_recentes %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th class="text-end">Amount</th>
+                                    {% if current_user.is_admin and not user_id_filtro %}
+                                    <th>User</th>
+                                    {% endif %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for transacao in transacoes_recentes %}
+                                <tr>
+                                    <td>{{ transacao.data.strftime('%d/%m/%Y') }}</td>
+                                    <td>{{ transacao.descricao }}</td>
+                                    <td
+                                        class="text-end {{ 'text-success' if transacao.tipo == 'receita' else 'text-danger' }}">
+                                        $ {{ "%.2f"|format(transacao.valor) }}
+                                    </td>
+                                    {% if current_user.is_admin and not user_id_filtro %}
+                                    <td class="small">
+                                        {% set user = firebase_auth.get_user(transacao.user_id) %}
+                                        {{ user.email|truncate(15) }}
+                                        <!-- {{ transacao.user_id|truncate(8, True, '...') }} -->
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info mb-0">
+                        No transactions in the last 30 days.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Scripts do Plotly -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</div>
+{% endblock %}

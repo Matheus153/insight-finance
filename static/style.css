@@ -1,0 +1,343 @@
+/* Ícones do Bootstrap Icons */
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css");
+
+body {
+    background-color: #f8f9fa;
+    font-family: Poppins, sans-serif;
+}
+
+.card {
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    font-weight: 500;
+}
+
+.card-body-home {
+    height: 10vh;
+    display: flex;
+    margin: 0 0 10px 20px;
+    align-items: end;
+}
+
+.navbar {
+    margin-bottom: 20px;
+    height: 14vh;
+    padding: 0.5rem 1rem;
+}
+
+/* Dropdown alinhado à direita */
+.dropdown-menu-end {
+    right: 0;
+    left: auto;
+}
+
+/* Ajuste do espaçamento dos itens */
+.navbar-nav .nav-item {
+    margin-left: 1rem;
+}
+
+/* Link ativo */
+.nav-link.active {
+    font-weight: 500;
+    position: relative;
+}
+
+.nav-link.active::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: grey;
+}
+
+.navbar-brand {
+    margin: 0 2.5rem 0 2.5rem;
+    justify-content: start;
+}
+
+.nav-link {
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    transform: translateY(-2px);
+}
+
+.table {
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Ajustes gerais de responsividade */
+.container {
+    padding-top: 40px; /* Compensa navbar fixa */
+}
+
+.table-responsive-md {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.grafico-responsive {
+    min-width: 300px; /* Largura mínima para gráficos */
+}
+
+.text-success {
+    font-weight: 500;
+}
+
+.text-danger {
+    font-weight: 500;
+}
+
+/* Filtro */
+.filter-box {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.filter-box select {
+    max-width: 400px;
+}
+
+/* Gráficos */
+.plotly-graph-div {
+    height: 400px;
+}
+
+.subscribe {
+    border-radius: 6px;
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 1.2rem;
+    width: 90%;
+    background:rgb(239, 238, 238);
+    margin: 1.5rem 0 3rem 0;
+}
+
+.link-blue {
+    text-decoration: none;
+    color:rgb(65, 100, 196);
+    transition: all 0.3s ease;
+}
+
+.link-blue:hover {
+    transform: translateY(-1px);
+}
+
+.card {
+    margin-bottom: 2rem;
+    border-radius: 10px;
+}
+
+.shadow {
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Onboarding  tutorial */
+.onboarding-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.onboarding-step {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+}
+
+.onboarding-step.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+.tutorial-gif {
+    display: block; /* Alterado para block */
+    width: 100%; /* Alterado para largura responsiva */
+    max-width: 600px; /* Tamanho máximo mantido */
+    height: auto; /* Altura automática */
+    margin: 1rem auto; /* Centralização horizontal */
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    object-fit: contain; /* Garante proporção correta */
+}
+
+.step-controls {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Adicione no seu CSS */
+.hero-section {
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    border-radius: 12px;
+}
+
+.auth-card {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.bg-primary-gradient {
+    background: linear-gradient(135deg,rgb(33, 36, 41) 0%,rgb(54, 64, 81) 100%);
+}
+
+.card-hover {
+    transition: transform 0.2s;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+}
+
+/* Floating Action Button */
+.fab-mobile {
+    position: fixed;
+    bottom: 3rem;
+    right: 2rem;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    text-position: center;
+    justify-content: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    padding: 0; 
+}
+
+.fab-mobile:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.fab-mobile i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin: 0; /* Remover margens padrão */
+    line-height: 1; /* Remover line-height extra */
+}
+
+
+/* Dispositivos pequenos (telefones, 576px e abaixo) */
+@media (max-width: 576px) {
+    .navbar-brand {
+        font-size: 1rem;
+    }
+    
+    .grafico-responsive {
+        height: 300px;
+        overflow-x: auto;
+    }
+    
+    .table-responsive-md {
+        font-size: 0.8rem;
+    }
+    
+    .card-title {
+        font-size: 1.2rem;
+    }
+}
+
+/* Dispositivos médios (tablets, 768px e abaixo) */
+@media (max-width: 768px) {
+    .dropdown-menu {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .navbar-nav .nav-item {
+        margin-left: 0;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Menu Mobile */
+@media (max-width: 991px) {
+    .navbar-collapse {
+        position: fixed;
+        top: 80px;
+        left: 15px;
+        right: 15px;
+        background: rgb(35, 39, 41);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        padding: 1rem;
+        max-height: calc(100vh - 70px);
+        overflow-y: auto;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-30px) scale(0.95);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .navbar-collapse.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
+    }
+
+    .nav-item {
+        margin: 0.8rem 0;
+        opacity: 0;
+        transform: translateX(-20px);
+        transition: all 0.3s ease-out;
+    }
+
+    .navbar-collapse.show .nav-item {
+        opacity: 1;
+        transform: translateX(0);
+        transition-delay: calc(0.1s * var(--i));
+    }
+
+    .dropdown-menu {
+        background: rgba(230, 234, 240, 0.82);
+        border: none;
+        margin-top: 0.5rem;
+        text-align: left;
+    }
+
+    .fab-mobile {
+        background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+    }
+    
+    .fab-mobile i {
+        color: white;
+    }
+
+}
+
+@media (min-width: 992px) {
+    .fab-mobile {
+        display: none !important;
+    }
+}
+

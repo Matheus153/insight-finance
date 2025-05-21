@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mb-4">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">
+                Edit Profile
+            </h4>
+        </div>
+
+        <div class="card-body">
+            <form method="POST" class="mb-4">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="mb-4">
+                    <label class="form-label">Login method:</label>
+                    <input type="text" class="form-control" value="{{ provider|capitalize }}" readonly>
+                </div>
+
+                <div class="mb-4">
+                    <label for="nome" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="nome" name="nome" value="{{ nome_atual }}" required
+                        minlength="2" maxlength="100">
+                    <div class="form-text">Minimum 2 characters, maximum 100</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary bg-gradient">
+                    <i class="fas fa-save me-2"></i>Save changes
+                </button>
+            </form>
+
+            <!-- Seção de Configuração de Metas -->
+            <div class="border-top pt-4 mb-4">
+                <h5 class="mb-4">
+                    <i class="bi bi-bell-fill me-2"></i>Alert Settings
+                </h5>
+
+                <form method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                    <div class="mb-3">
+                        <label class="form-label">Low Balance Alert</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" name="meta_alerta" min="0" max="100" step="0.1"
+                                value="{{ meta_atual }}" required>
+                            <span class="input-group-text">% of revenue</span>
+                        </div>
+                        <div class="form-text">
+                            I will receive alerts when my balance falls below this percentage of total revenue
+                        </div>
+                    </div>
+
+                    <button type="submit" name="definir_meta" class="btn btn-primary bg-gradient">
+                        <i class="bi bi-save me-2"></i>Save Configuration
+                    </button>
+                </form>
+            </div>
+
+            <!-- Seção de Exclusão de Conta -->
+            <div class="border-top pt-4 mt-4">
+                <h5 class="text mb-4">
+                    Danger Zone
+                </h5>
+
+                <div class="alert alert-warning mb-4">
+                    <h6>Attention! This action is irreversible</h6>
+                    <p class="mb-0">When you delete your account:</p>
+                    <ul>
+                        <li>All your transactions will be permanently deleted</li>
+                        <li>Your personal data will be removed from our systems</li>
+                        <li>No information can be recovered</li>
+                    </ul>
+                </div>
+
+                <button type="button" class="btn btn-danger bg-gradient" data-bs-toggle="modal"
+                    data-bs-target="#confirmarExclusao">
+                    <i class="bi bi-trash3"></i> Delete My Account
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmação -->
+<div class="modal fade" id="confirmarExclusao" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger bg-gradient text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-exclamation-octagon"></i> Confirm Exclusion
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure you want to delete your account permanently?</p>
+                <form method="POST" id="deleteForm">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="delete_account" value="true">
+
+                    {% if provider == 'password' %}
+                    <div class="mb-3">
+                        <label class="form-label">Confirm your password</label>
+                        <input type="password" class="form-control" name="password" required>
+                    </div>
+                    {% endif %}
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" form="deleteForm" class="btn btn-outline-danger">
+                    Confirm Exclusion
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
