@@ -48,8 +48,8 @@ def create_app():
     app.secret_key = os.getenv('SECRET_KEY')
 
     # To use in e-mail forwarding links
-    app.config['SERVER_NAME'] = 'localhost' # Replace with 'localhost:5000' if you want to run locally
-    app.config['PREFERRED_URL_SCHEME'] = 'http' # Replace with 'http' if you want to run locally
+    app.config['SERVER_NAME'] = os.getenv('SERVER_NAME') # Replace with 'localhost:5000' if you want to run locally
+    app.config['PREFERRED_URL_SCHEME'] = os.getenv('PREFERRED_URL_SCHEME') # Replace with 'http' if you want to run locally
     app.config['APPLICATION_ROOT'] = '/'
 
     # Email settings
