@@ -10,7 +10,7 @@ A system that carries out your financial control through daily and monthly monit
 </div>
 </br>
 
-# Pré-condition
+# Pre-condition
 
 - Git (https://git-scm.com/)
 - Python (https://www.python.org/)
@@ -161,18 +161,18 @@ You can fill them in with the following pattern:
 
 ```bash
         {'nome': 'Salary', 'tipo': 'revenue'},
-        {'nome': 'Investimentos', 'tipo': 'revenue'},
-        {'nome': 'Alimentação', 'tipo': 'expense'},
-        {'nome': 'Moradia', 'tipo': 'expense'},
-        {'nome': 'Transporte', 'tipo': 'expense'},
-        {'nome': 'Lazer', 'tipo': 'expense'},
-        {'nome': 'Saúde', 'tipo': 'expense'},
-        {'nome': 'Educação', 'tipo': 'expense'},
-        {'nome': 'Impostos', 'tipo': 'expense'},
-        {'nome': 'Animais de estimação', 'tipo': 'expense'},
-        {'nome': 'Cartão de crédito', 'tipo': 'expense'},
-        {'nome': 'Vale-alimentação', 'tipo': 'revenue'},
-        {'nome': 'Vale-refeição', 'tipo': 'revenue'},
+        {'nome': 'Investments', 'tipo': 'revenue'},
+        {'nome': 'Food', 'tipo': 'expense'},
+        {'nome': 'Housing', 'tipo': 'expense'},
+        {'nome': 'Transport', 'tipo': 'expense'},
+        {'nome': 'Leisure', 'tipo': 'expense'},
+        {'nome': 'Health', 'tipo': 'expense'},
+        {'nome': 'Education', 'tipo': 'expense'},
+        {'nome': 'Taxes', 'tipo': 'expense'},
+        {'nome': 'Pets', 'tipo': 'expense'},
+        {'nome': 'Credit card', 'tipo': 'expense'},
+        {'nome': 'Food voucher', 'tipo': 'revenue'},
+        {'nome': 'Meal voucher', 'tipo': 'revenue'},
 ```
 
 - Add a table called “transaction” to the database with the following columns:
@@ -255,24 +255,4 @@ flask-financas/
 │   └── style.css
 └── run.py
 ```
-
-## Diagrams
-
-<div align="center">	
-  <h2>Fluxo controle de acesso</h2>
-	<img src="public/fluxo-controle-de-acesso.png" width="400"/>
-</div>
-
-<div align="center">	
-  <h2>Boas práticas</h2>
-	<img src="public/boas-praticas.png" width="400"/>
-</div>
-
-## Author
-
-<div align="center">
-  <img width="150" src="https://avatars1.githubusercontent.com/u/62727591?s=460&u=03f8868eec3f187e0c33d7311b5bca386c8419c7&v=4">
-  <h2>Matheus Santos Lima</h2>
-</div>
-
 
