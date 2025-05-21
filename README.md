@@ -116,7 +116,37 @@ Access Firebase **[Console](https://console.firebase.google.com/)**
 
 - Download the .json file and fill in the environment variables in the .env file
 
-#### 4. PostgreSQL database
+#### 4. Configuring Firestore
+
+🏦 To fully utilize the application's functionality, configure the Firebase database called Firestore:
+Access Firebase **[Console](https://console.firebase.google.com/)**
+
+Note: to use this feature, enable the billing option for your Google account.
+
+- Access the "Firestore Database" tab
+
+- Enable Cloud Firestore
+
+- Create your database
+
+- When creating your database, go to "Rules" and replace the current code with the following:
+
+```bash
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /usuarios/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow write: if false;
+    }
+  }
+}
+```
+
+- Publish your changes
+
+#### 5. PostgreSQL database
 
 Note: You must first have a database created in the **[Supabase](https://supabase.com/)** or any other that is available for free (Heroku or Railway)
 
